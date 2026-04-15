@@ -1,36 +1,49 @@
 module Library where
 import PdePreludat
 
+doble :: Number -> Number
+doble numero = numero + numero
+
+---- Pruebas
+gerardo :: Persona
+gerardo = UnaPersona "Gerardo" "Facha" 1985
+fiestaGerardo :: Fiesta
+fiestaGerardo = UnaFiesta gerardo ["Nahuel", "Lucas", "Micaela", "Tomás", "Matías"] "rock"
+
 type Nombre = String
-type AnioNacimiento = Int
-type EstiloMusica = String
+type Apodo = String
+type Genero = String
+type Anio = Number
+type Cantidad = Number
+---- Estructuras
 
+data Persona = UnaPersona{
+	nombre :: Nombre,
+	apodo :: Apodo,
+	anioNacimiento :: Anio
+}
 
+data Fiesta = UnaFiesta{
+	cumpleaniero :: Persona,
+	listaInv :: [Nombre],
+	generoMusica :: Genero
+}
 
-
--- modelo persona
-
-data Persona = Persona {
-    nombre :: String,
-    anioNacimiento :: Int
-} deriving (Eq, Show)
-
---modelo fiesta
-
-data Fiesta = Fiesta {
-    cumpleaniero :: Persona,
-    invitados :: [Persona],
-    estiloMusica :: String
-} deriving (Eq, Show)
-
-juan :: Persona
-juan = Persona "Juan" 1995
-
+---- Funciones
 esMayor :: Persona -> Persona -> Bool
 esMayor persona persona2 = anioNacimiento persona < anioNacimiento persona2
 
---ponerApodo :: Persona -> String -> Persona
---ponerApodo persona apodo = persona { nombre = apodo }
+tieneBuenaMusica :: Fiesta -> Bool
+tieneBuenaMusica fiesta = ((generoMusica fiesta) == "rock") || ((generoMusica fiesta) == "regueton viejo")
 
 esGrande :: Fiesta -> Bool
-esGrande fiesta = ((>10).length) invitados fiesta
+esGrande fiesta = ((>=3).length.listaInv) fiesta
+
+esCumplanieroMayorDeEdad :: Fiesta -> Bool
+esCumplanieroMayorDeEdad fiesta = (2026 - (anioNacimiento.cumpleaniero) fiesta) >= 18
+
+esAburrida :: Fiesta -> Bool
+esAburrida fiesta = (generoMusica fiesta == "clasico") && ((not.esGrande) fiesta)
+
+buenaFiesta :: Fiesta -> Bool
+buenaFiesta fiesta = (tieneBuenaMusica fiesta) && (esGrande fiesta) && (esCumplanieroMayorDeEdad fiesta)
