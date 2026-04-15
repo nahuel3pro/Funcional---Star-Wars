@@ -29,5 +29,8 @@ juan = Persona "Juan" 1995
 esMayor :: Persona -> Persona -> Bool
 esMayor persona persona2 = anioNacimiento persona < anioNacimiento persona2
 
-ponerApodo :: Persona -> String -> Persona
-ponerApodo persona apodo = persona { nombre = apodo }
+--ponerApodo :: Persona -> String -> Persona
+--ponerApodo persona apodo = persona { nombre = apodo }
+
+esGrande :: Fiesta -> Bool
+esGrande fiesta = ((>10).length) invitados fiesta
