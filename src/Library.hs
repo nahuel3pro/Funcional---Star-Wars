@@ -6,7 +6,7 @@ doble numero = numero + numero
 
 ---- Pruebas
 gerardo :: Persona
-gerardo = UnaPersona "Gerardo" "Facha" 35
+gerardo = UnaPersona "Gerardo" "Facha" 1985
 fiestaGerardo :: Fiesta
 fiestaGerardo = UnaFiesta gerardo ["Nahuel", "Lucas", "Micaela", "Tomás", "Matías"] "rock"
 
@@ -40,7 +40,7 @@ esGrande :: Fiesta -> Bool
 esGrande fiesta = ((>=3).length.listaInv) fiesta
 
 esCumplanieroMayorDeEdad :: Fiesta -> Bool
-esCumplanieroMayorDeEdad fiesta = (edad.cumpleaniero) fiesta >= 18
+esCumplanieroMayorDeEdad fiesta = (2026 - (anioNacimiento.cumpleaniero) fiesta) >= 18
 
 esAburrida :: Fiesta -> Bool
 esAburrida fiesta = (generoMusica fiesta == "clasico") && ((not.esGrande) fiesta)
