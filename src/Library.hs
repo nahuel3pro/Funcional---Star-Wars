@@ -13,14 +13,14 @@ fiestaGerardo = UnaFiesta gerardo ["Nahuel", "Lucas", "Micaela", "Tom√°s", "Mat√
 type Nombre = String
 type Apodo = String
 type Genero = String
-type Edad = Number
+type Anio = Number
 type Cantidad = Number
 ---- Estructuras
 
 data Persona = UnaPersona{
 	nombre :: Nombre,
 	apodo :: Apodo,
-	edad :: Edad
+	anioNacimiento :: Anio
 }
 
 data Fiesta = UnaFiesta{
