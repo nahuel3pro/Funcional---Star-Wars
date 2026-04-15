@@ -30,6 +30,9 @@ data Fiesta = UnaFiesta{
 }
 
 ---- Funciones
+esMayor :: Persona -> Persona -> Bool
+esMayor persona persona2 = anioNacimiento persona < anioNacimiento persona2
+
 tieneBuenaMusica :: Fiesta -> Bool
 tieneBuenaMusica fiesta = ((generoMusica fiesta) == "rock") || ((generoMusica fiesta) == "regueton viejo")
 
