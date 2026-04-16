@@ -6,7 +6,7 @@ doble numero = numero + numero
 
 ---- Pruebas
 gerardo :: Persona
-gerardo = UnaPersona "Gerardo" "Facha" 1985
+gerardo = UnaPersona "Gerardo" 1985
 fiestaGerardo :: Fiesta
 fiestaGerardo = UnaFiesta gerardo ["Nahuel", "Lucas", "Micaela", "Tomás", "Matías"] "rock"
 
@@ -18,10 +18,9 @@ type Cantidad = Number
 ---- Estructuras
 
 data Persona = UnaPersona{
-	nombre :: Nombre,
-	apodo :: Apodo,
+ 	nombre :: Nombre,
 	anioNacimiento :: Anio
-}
+} deriving (Show)
 
 data Fiesta = UnaFiesta{
 	cumpleaniero :: Persona,
@@ -30,6 +29,12 @@ data Fiesta = UnaFiesta{
 }
 
 ---- Funciones
+ponerApodo :: Apodo -> Persona -> Persona
+ponerApodo apodo persona = UnaPersona {
+	nombre = apodo,
+	anioNacimiento = anioNacimiento persona
+}
+
 esMayor :: Persona -> Persona -> Bool
 esMayor persona persona2 = anioNacimiento persona < anioNacimiento persona2
 
