@@ -24,7 +24,7 @@ data Persona = UnaPersona{
 
 data Fiesta = UnaFiesta{
 	cumpleaniero :: Persona,
-	listaInv :: [Nombre],
+	listaInvitados :: [Nombre],
 	generoMusica :: Genero
 }
 
@@ -42,7 +42,7 @@ tieneBuenaMusica :: Fiesta -> Bool
 tieneBuenaMusica fiesta = ((generoMusica fiesta) == "rock") || ((generoMusica fiesta) == "regueton viejo")
 
 esGrande :: Fiesta -> Bool
-esGrande fiesta = ((>=3).length.listaInv) fiesta
+esGrande fiesta = ((>=3).length.listaInvitados) fiesta
 
 esCumplanieroMayorDeEdad :: Fiesta -> Bool
 esCumplanieroMayorDeEdad fiesta = (2026 - (anioNacimiento.cumpleaniero) fiesta) >= 18
@@ -52,3 +52,11 @@ esAburrida fiesta = (generoMusica fiesta == "clasico") && ((not.esGrande) fiesta
 
 buenaFiesta :: Fiesta -> Bool
 buenaFiesta fiesta = (tieneBuenaMusica fiesta) && (esGrande fiesta) && (esCumplanieroMayorDeEdad fiesta)
+
+invitar :: Fiesta -> Persona -> Fiesta
+invitar fiesta persona = UnaFiesta{
+	cumpleaniero = cumpleaniero fiesta,
+	listaInvitados = (nombre persona) : (listaInvitados fiesta),
+	generoMusica = generoMusica fiesta,
+	}
+
