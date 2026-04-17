@@ -57,6 +57,5 @@ invitar :: Fiesta -> Persona -> Fiesta
 invitar fiesta persona = UnaFiesta{
 	cumpleaniero = cumpleaniero fiesta,
 	listaInvitados = (nombre persona) : (listaInvitados fiesta),
-	generoMusica = generoMusica fiesta,
+	generoMusica = generoMusica fiesta
 	}
-
