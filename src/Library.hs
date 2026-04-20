@@ -18,9 +18,9 @@ type Cantidad = Number
 ---- Estructuras
 
 data Persona = UnaPersona{
-	nombre :: Nombre,
-	apodo :: Apodo,
-	anioNacimiento :: Anio
+    nombre :: Nombre,
+    apodo :: Apodo,
+    anioNacimiento :: Anio
 }
 
 data Fiesta = UnaFiesta{
@@ -37,7 +37,7 @@ tieneBuenaMusica :: Fiesta -> Bool
 tieneBuenaMusica fiesta = ((generoMusica fiesta) == "rock") || ((generoMusica fiesta) == "regueton viejo")
 
 esGrande :: Fiesta -> Bool
-esGrande fiesta = ((>=3).length.listaInv) fiesta
+esGrande fiesta = ((>=10).length.listaInv) fiesta
 
 esCumplanieroMayorDeEdad :: Fiesta -> Bool
 esCumplanieroMayorDeEdad fiesta = (2026 - (anioNacimiento.cumpleaniero) fiesta) >= 18
