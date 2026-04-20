@@ -5,6 +5,6 @@
 
 ## Integrantes
 
-- integrante1 (usuario github)
+- Lucas Guzman (luguzman777)
 - integrante2 (usuario github)
 ...
