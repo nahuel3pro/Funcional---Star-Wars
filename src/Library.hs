@@ -6,7 +6,7 @@ doble numero = numero + numero
 
 ---- Pruebas
 gerardo :: Persona
-gerardo = UnaPersona "Gerardo" 1985
+gerardo = UnaPersona "Gerardo" "" 1985
 fiestaGerardo :: Fiesta
 fiestaGerardo = UnaFiesta gerardo ["Nahuel", "Lucas", "Micaela", "Tomás", "Matías"] "rock"
 
@@ -31,10 +31,7 @@ data Fiesta = UnaFiesta{
 
 ---- Funciones
 ponerApodo :: Apodo -> Persona -> Persona
-ponerApodo apodo persona = UnaPersona {
-	nombre = apodo,
-	anioNacimiento = anioNacimiento persona
-}
+ponerApodo apodoPersona persona = persona {apodo = apodoPersona}
 
 esMayor :: Persona -> Persona -> Bool
 esMayor persona persona2 = anioNacimiento persona < anioNacimiento persona2
@@ -55,20 +52,15 @@ buenaFiesta :: Fiesta -> Bool
 buenaFiesta fiesta = (tieneBuenaMusica fiesta) && (esGrande fiesta) && (esCumplanieroMayorDeEdad fiesta)
 
 invitar :: Fiesta -> Persona -> Fiesta
-invitar fiesta persona = UnaFiesta{
-	cumpleaniero = cumpleaniero fiesta,
-	listaInvitados = (nombre persona) : (listaInvitados fiesta),
-	generoMusica = generoMusica fiesta
-	}
+invitar fiesta persona = fiesta{listaInvitados = (nombre persona) : (listaInvitados fiesta)}
 
 laMayor :: Persona -> Persona -> Persona
 laMayor persona persona2
     | esMayor persona persona2 = persona
-    | otherwise     = persona2
+    | otherwise = persona2
 
 fingirDemencia :: Persona -> Fiesta -> Bool
-fingirDemencia persona =
-    buenaFiesta . agregarSiNoEsta persona
+fingirDemencia persona = buenaFiesta . agregarSiNoEsta persona
 
 agregarSiNoEsta :: Persona -> Fiesta -> Fiesta
 agregarSiNoEsta persona fiesta
