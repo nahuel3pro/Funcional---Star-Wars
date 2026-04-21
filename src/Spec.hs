@@ -8,10 +8,14 @@ jorge :: Persona
 jorge = UnaPersona "Jorge" 2006
 gerardo :: Persona
 gerardo = UnaPersona "Gerardo" 1985
+ana :: Persona
+ana = UnaPersona "Ana" 1950
 fiestaGerardo :: Fiesta
 fiestaGerardo = UnaFiesta gerardo ["Nahuel", "Lucas", "Micaela", "Tomás", "Matías"] "rock"
 fiestaJorge :: Fiesta
-fiestaJorge = UnaFiesta jorge ["Ludmila", "Pablo", "Micaela", "Tomás", "Matías", " ", " ", "", "", "", ""] "clasico"
+fiestaJorge = UnaFiesta jorge ["Ludmila", "Pablo", "Micaela", "Tomás", "Matías", " ", " ", "", "", "", ""] "regueton viejo"
+fiestaAna :: Fiesta
+fiestaAna = UnaFiesta ana ["Ludmila", "Pablo"] "clasico"
 
 correrTests :: IO ()
 correrTests = hspec $ do
@@ -29,4 +33,9 @@ correrTests = hspec $ do
   describe "Tests de fiesta" $ do
     it "Función tiene buena música" $ do
       tieneBuenaMusica fiestaGerardo `shouldBe` True
-      tieneBuenaMusica fiestaJorge `shouldBe` False
+      tieneBuenaMusica fiestaJorge `shouldBe` True
+      tieneBuenaMusica fiestaAna  `shouldBe` False
+    it "Función fiesta es aburrida" $ do
+      esAburrida fiestaAna `shouldBe` True
+      esAburrida fiestaGerardo `shouldBe` False
+      esAburrida fiestaJorge `shouldBe` False
