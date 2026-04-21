@@ -1,6 +1,7 @@
 module Library where
 import PdePreludat
 
+
 doble :: Number -> Number
 doble numero = numero + numero
 
@@ -9,18 +10,18 @@ type Apodo = String
 type Genero = String
 type Anio = Number
 type Cantidad = Number
----- Estructuras
+---- 
 
 data Persona = UnaPersona{
 	nombre :: Nombre,
 	anioNacimiento :: Anio
-} deriving(Show,Eq)
+}deriving(Show,Eq)
 
 data Fiesta = UnaFiesta{
 	cumpleaniero :: Persona,
 	listaInvitados :: [Nombre],
 	generoMusica :: Genero
-} deriving(Show,Eq)
+}deriving(Show,Eq)
 
 ---- Funciones
 
@@ -36,6 +37,7 @@ ponerApodo apodo persona = UnaPersona {
 esGrande :: Fiesta -> Bool
 esGrande fiesta = ((>=10).length.listaInvitados) fiesta
 
+-- punto 4
 tieneBuenaMusica :: Fiesta -> Bool
 -- tieneBuenaMusica fiesta = ((generoMusica fiesta) == "rock") || ((generoMusica fiesta) == "regueton viejo")
 -- tieneBuenaMusica fiesta = ((== "rock"). generoMusica $ fiesta) || ((== "regueton viejo"). generoMusica $ fiesta)
@@ -49,9 +51,12 @@ laMayor persona persona2
 invitar :: Fiesta -> Persona -> Fiesta
 invitar fiesta persona = fiesta{listaInvitados = (nombre persona) : (listaInvitados fiesta)}
 
+--punto 7
 esAburrida :: Fiesta -> Bool
 esAburrida fiesta = ((== "clasico") . generoMusica $ fiesta) && ((not.esGrande $ fiesta))
 
+
+--punto 8
 buenaFiesta :: Fiesta -> Bool
 buenaFiesta fiesta = (tieneBuenaMusica fiesta) && (esGrande fiesta) && (esCumplanieroMayorDeEdad fiesta)
 

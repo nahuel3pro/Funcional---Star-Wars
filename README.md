@@ -6,5 +6,5 @@
 ## Integrantes
 
 - Lucas Guzman (luguzman777)
-- integrante2 (usuario github)
+- Lopez Ivan (IvanLopez2001)
 ...
