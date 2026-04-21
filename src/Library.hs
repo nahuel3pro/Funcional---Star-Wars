@@ -14,13 +14,13 @@ type Cantidad = Number
 data Persona = UnaPersona{
 	nombre :: Nombre,
 	anioNacimiento :: Anio
-}
+} deriving(Show,Eq)
 
 data Fiesta = UnaFiesta{
 	cumpleaniero :: Persona,
 	listaInvitados :: [Nombre],
 	generoMusica :: Genero
-}
+} deriving(Show,Eq)
 
 ---- Funciones
 ponerApodo :: Apodo -> Persona -> Persona
