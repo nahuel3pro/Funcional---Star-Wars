@@ -4,12 +4,6 @@ import PdePreludat
 doble :: Number -> Number
 doble numero = numero + numero
 
----- Pruebas
-gerardo :: Persona
-gerardo = UnaPersona "Gerardo" "" 1985
-fiestaGerardo :: Fiesta
-fiestaGerardo = UnaFiesta gerardo ["Nahuel", "Lucas", "Micaela", "Tomás", "Matías"] "rock"
-
 type Nombre = String
 type Apodo = String
 type Genero = String
@@ -19,7 +13,6 @@ type Cantidad = Number
 
 data Persona = UnaPersona{
 	nombre :: Nombre,
-	apodo :: Apodo,
 	anioNacimiento :: Anio
 }
 
@@ -31,7 +24,10 @@ data Fiesta = UnaFiesta{
 
 ---- Funciones
 ponerApodo :: Apodo -> Persona -> Persona
-ponerApodo apodoPersona persona = persona {apodo = apodoPersona}
+ponerApodo apodo persona = UnaPersona {
+	nombre = apodo,
+	anioNacimiento = anioNacimiento persona
+}
 
 esMayor :: Persona -> Persona -> Bool
 esMayor persona persona2 = anioNacimiento persona < anioNacimiento persona2
