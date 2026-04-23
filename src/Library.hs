@@ -23,6 +23,8 @@ data Fiesta = UnaFiesta{
 	generoMusica :: Genero
 }deriving(Show,Eq)
 
+buenaMusica = ["rock", "regueton viejo"]
+
 ---- Funciones
 
 esMayor :: Persona -> Persona -> Bool
@@ -41,7 +43,8 @@ esGrande fiesta = ((>=10).length.listaInvitados) fiesta
 tieneBuenaMusica :: Fiesta -> Bool
 -- tieneBuenaMusica fiesta = ((generoMusica fiesta) == "rock") || ((generoMusica fiesta) == "regueton viejo")
 -- tieneBuenaMusica fiesta = ((== "rock"). generoMusica $ fiesta) || ((== "regueton viejo"). generoMusica $ fiesta)
-tieneBuenaMusica fiesta = (||((== "rock") . generoMusica $ fiesta)) . (== "regueton viejo") . generoMusica $ fiesta --Opción más pedante(?)
+--tieneBuenaMusica fiesta = (||((== "rock") . generoMusica $ fiesta)) . (== "regueton viejo") . generoMusica $ fiesta --Opción más pedante(?)
+tieneBuenaMusica fiesta = (flip elem buenaMusica). generoMusica $ fiesta
 
 laMayor :: Persona -> Persona -> Persona
 laMayor persona persona2
@@ -53,7 +56,7 @@ invitar fiesta persona = fiesta{listaInvitados = (nombre persona) : (listaInvita
 
 --punto 7
 esAburrida :: Fiesta -> Bool
-esAburrida fiesta = ((== "clasico") . generoMusica $ fiesta) && ((not.esGrande $ fiesta))
+esAburrida fiesta = ((== "clasico") . generoMusica $ fiesta) && (not.esGrande $ fiesta)
 
 
 --punto 8
@@ -64,7 +67,7 @@ fingirDemencia :: Persona -> Fiesta -> Bool
 fingirDemencia persona = buenaFiesta . agregarSiNoEsta persona
 
 esCumplanieroMayorDeEdad :: Fiesta -> Bool
-esCumplanieroMayorDeEdad fiesta = (2026 - (anioNacimiento.cumpleaniero) fiesta) >= 18
+esCumplanieroMayorDeEdad fiesta = (>=18).(2026 -).anioNacimiento.cumpleaniero $ fiesta
 
 agregarSiNoEsta :: Persona -> Fiesta -> Fiesta
 agregarSiNoEsta persona fiesta

@@ -5,7 +5,7 @@ import Test.Hspec
 
 ---- Pruebas
 jorge :: Persona
-jorge = UnaPersona "Jorge" 2006
+jorge = UnaPersona "Jorge" 2015
 gerardo :: Persona
 gerardo = UnaPersona "Gerardo" 1985
 ana :: Persona
@@ -39,3 +39,6 @@ correrTests = hspec $ do
       esAburrida fiestaAna `shouldBe` True
       esAburrida fiestaGerardo `shouldBe` False
       esAburrida fiestaJorge `shouldBe` False
+    it "El cumpleañero es mayor de edad" $ do
+      esCumplanieroMayorDeEdad fiestaJorge `shouldBe` False
+      esCumplanieroMayorDeEdad fiestaAna `shouldBe` True
