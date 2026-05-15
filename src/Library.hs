@@ -6,70 +6,108 @@ doble :: Number -> Number
 doble numero = numero + numero
 
 type Nombre = String
-type Apodo = String
-type Genero = String
-type Anio = Number
-type Cantidad = Number
----- 
+type Durabilidad = Number
+type Escudo = Number
+type Ataque = Number
+type Poder = Nave -> Nave
+type Flota = [Nave]
 
-data Persona = UnaPersona{
+data Nave = UnaNave{
 	nombre :: Nombre,
-	anioNacimiento :: Anio
-}deriving(Show,Eq)
+	durabilidad :: Durabilidad,
+	escudo :: Escudo,
+	ataque :: Ataque,
+	poder :: Poder
+} deriving(Show, Eq)
 
-data Fiesta = UnaFiesta{
-	cumpleaniero :: Persona,
-	listaInvitados :: [Nombre],
-	generoMusica :: Genero
-}deriving(Show,Eq)
+turbo :: Poder
+turbo = modificarAtaque (+25)
 
-buenaMusica = ["rock", "regueton viejo"]
+reparacionEmergencia :: Poder
+reparacionEmergencia = modificarDurabilidad (+50) . modificarAtaque (subtract 30)
 
----- Funciones
+superTurbo :: Poder
+superTurbo = turbo . turbo . turbo . modificarDurabilidad (subtract 45)
+ 
+tieFighter = UnaNave{
+	nombre = "TIE Fighter",
+	durabilidad = 200,
+	escudo = 100,
+	ataque = 50,
+	poder = turbo
 
-esMayor :: Persona -> Persona -> Bool
-esMayor persona persona2 = (< anioNacimiento persona2) (anioNacimiento persona)
-
-ponerApodo :: Apodo -> Persona -> Persona
-ponerApodo apodo persona = UnaPersona {
-	nombre = apodo,
-	anioNacimiento = anioNacimiento persona
+}
+millennium = UnaNave{
+	nombre = "Millennium Falcon",
+	durabilidad = 1000,
+	escudo = 500,
+	ataque = 50,
+	poder = reparacionEmergencia.modificarEscudo (+100)
 }
 
-esGrande :: Fiesta -> Bool
-esGrande fiesta = ((>=10).length.listaInvitados) fiesta
+-- Funciones poderes
+modificarAtaque:: (Number->Number) -> Poder
+modificarAtaque funcion nave = nave{
+	ataque = funcion.ataque$nave
+}
 
--- punto 4
-tieneBuenaMusica :: Fiesta -> Bool
--- tieneBuenaMusica fiesta = ((generoMusica fiesta) == "rock") || ((generoMusica fiesta) == "regueton viejo")
--- tieneBuenaMusica fiesta = ((== "rock"). generoMusica $ fiesta) || ((== "regueton viejo"). generoMusica $ fiesta)
---tieneBuenaMusica fiesta = (||((== "rock") . generoMusica $ fiesta)) . (== "regueton viejo") . generoMusica $ fiesta --Opción más pedante(?)
-tieneBuenaMusica fiesta = (flip elem buenaMusica). generoMusica $ fiesta
+modificarDurabilidad:: (Number->Number) -> Poder
+modificarDurabilidad funcion nave = nave{
+	durabilidad = funcion.durabilidad $ nave
+}
 
-laMayor :: Persona -> Persona -> Persona
-laMayor persona persona2
-    | esMayor persona persona2 = persona
-    | otherwise = persona2
+modificarEscudo :: (Number->Number) -> Poder
+modificarEscudo funcion nave = nave{
+	escudo = funcion.escudo $ nave
+}
 
-invitar :: Fiesta -> Persona -> Fiesta
-invitar fiesta persona = fiesta{listaInvitados = (nombre persona) : (listaInvitados fiesta)}
+-- 2
+durabilidadTotal :: Flota -> Number
+durabilidadTotal = foldr1 (+).map (durabilidad)
 
---punto 7
-esAburrida :: Fiesta -> Bool
-esAburrida fiesta = ((== "clasico") . generoMusica $ fiesta) && (not.esGrande $ fiesta)
+-- 3
+usarPoder :: Poder
+usarPoder nave = poder nave nave 
 
+danioRecibido :: Nave -> Nave -> Number
+danioRecibido naveAtacante naveAtacada = max 0 . (subtract (escudo naveAtacada)) . ataque $ naveAtacante
 
---punto 8
-buenaFiesta :: Fiesta -> Bool
-buenaFiesta fiesta = (tieneBuenaMusica fiesta) && (esGrande fiesta) && (esCumplanieroMayorDeEdad fiesta)
+resultadoAtaqueaNave :: Nave -> Nave -> Nave
+resultadoAtaqueaNave naveAtacante naveAtacada = atacar (usarPoder naveAtacante) (usarPoder naveAtacada)
 
-fingirDemencia :: Persona -> Fiesta -> Bool
-fingirDemencia persona = buenaFiesta . agregarSiNoEsta persona
+atacar :: Nave -> Nave -> Nave
+atacar naveAtacante naveAtacada = modificarDurabilidad (subtract.danioRecibido naveAtacante $ naveAtacada) naveAtacada
 
-esCumplanieroMayorDeEdad :: Fiesta -> Bool
-esCumplanieroMayorDeEdad fiesta = (>=18).(2026 -).anioNacimiento.cumpleaniero $ fiesta
+-- 4
+estaFueradeCombate :: Nave -> Bool
+estaFueradeCombate = (==0).durabilidad
 
-agregarSiNoEsta :: Persona -> Fiesta -> Fiesta
-agregarSiNoEsta persona fiesta
-    | elem (nombre persona) (listaInvitados fiesta) = fiesta
-    | otherwise = invitar fiesta persona
+-- 5
+-- Pasar por cada elemento de la lista y ver si cumple con la estrategia, de no cumplir, no se hace nada.
+esNaveDebil :: Nave -> Bool
+esNaveDebil = (<200).escudo
+
+esPeligrosa :: Number -> Nave -> Bool
+esPeligrosa valor = (> valor).ataque
+
+quedariaFueraDeCombateContra :: Nave -> Nave -> Bool
+quedariaFueraDeCombateContra naveAtacante naveAtacada = estaFueradeCombate . resultadoAtaqueaNave naveAtacante $ naveAtacada
+
+type Estrategia = Nave -> Bool
+realizarMision :: Estrategia -> Nave -> Flota -> Flota
+realizarMision estrategia naveAtacante flota = map (atacarSiCumple estrategia naveAtacante) flota
+
+atacarSiCumple :: Estrategia -> Nave -> Nave -> Nave
+atacarSiCumple estrategia naveAtacante naveAtacada 
+	| estrategia naveAtacada = resultadoAtaqueaNave naveAtacante naveAtacada
+	| otherwise = naveAtacada
+
+-- 6 
+estrategiaMasEfectiva :: Estrategia -> Estrategia -> Nave -> Flota -> Estrategia
+estrategiaMasEfectiva estrategia1 estrategia2 naveAtacante flota
+	| durabilidadTotal (realizarMision estrategia1 naveAtacante flota) < durabilidadTotal (realizarMision estrategia2 naveAtacante flota) = estrategia1
+	| otherwise = estrategia2
+
+llevarMisionMasEfectiva :: Estrategia -> Estrategia -> Nave -> Flota -> Flota
+llevarMisionMasEfectiva estrategia1 estrategia2 naveAtacante flota =
+	realizarMision (estrategiaMasEfectiva estrategia1 estrategia2 naveAtacante flota) naveAtacante flota
